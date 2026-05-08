@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 1. Урок 5 — Профиль который цепляет: настройка за один вечер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 620px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); }
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  @media (max-width: 640px) { .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; } }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .compare-card { border-radius: var(--radius-md); padding: 20px; font-size: 14px; line-height: 1.6; }
+  .compare-bad { background: #FFF5F5; border: 1px solid #FCCACA; }
+  .compare-good { background: #F5FEE0; border: 1px solid #D4F097; }
+  .compare-header { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .compare-bad .compare-header { color: #C03030; }
+  .compare-good .compare-header { color: #4A8000; }
+  .compare-card p { color: #444; margin-bottom: 8px; }
+  .compare-card p:last-child { margin-bottom: 0; }
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+  .secrets-grid { display: grid; gap: 12px; }
+  .secret-item { display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: start; }
+  .secret-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .secret-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .secret-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-dark p:last-of-type { margin-bottom: 20px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+  .hl { background: var(--accent); color: var(--accent-ink); padding: 1px 7px; border-radius: 5px; font-weight: 600; }
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card { padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--ink); }
+  .stat-label { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--ink-3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .questions-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+  .question-card { padding: 18px 22px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .question-num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em; margin-bottom: 6px; }
+  .question-text { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--ink); }
+  .question-hint { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .bio-template { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 24px; margin-bottom: 16px; font-family: var(--font-body); }
+  .bio-template-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 14px; }
+  .bio-line { display: grid; grid-template-columns: 110px 1fr; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08); align-items: baseline; }
+  .bio-line:last-child { border-bottom: none; }
+  .bio-line-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 0.06em; }
+  .bio-line-text { font-size: 14px; color: #fff; line-height: 1.55; }
+  .bio-line-text em { color: #8A8E94; font-style: normal; }
+  .section-alt .card,
+  .section-alt .stat-card,
+  .section-alt .question-card { background: var(--bg); }
+  .section-alt .secret-item { background: var(--bg); }
+  .section-alt .glossary-item { background: var(--bg); }
+  .section-alt .checklist-item { background: var(--bg); }
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .formula-steps { flex-direction: column; align-items: flex-start; }
+    .bio-line { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 1 / Урок 5</span>
+      <span class="title-text">Профиль который цепляет: настройка за один вечер</span>
+    </div>
+    <p class="hero-lead">Решение «подписаться или нет» принимается за три секунды — на фото, нике и первой строке описания. Разбираем, как через эти три элемента ответить на главный вопрос читателя — «зачем мне тебя читать?». По итогу — настройка профиля за один вечер.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Анастасия Дробот, спикер курса, блогер</span>
+      <span class="chip"><span class="chip-dot"></span>Правило 3 секунд</span>
+      <span class="chip"><span class="chip-dot"></span>4 строки описания</span>
+      <span class="chip"><span class="chip-dot"></span>Закреплённый пост</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> 3 секунды</button>
+    <button class="nav-btn" onclick="navTo('photo')"><span class="nav-num">2</span> Фото</button>
+    <button class="nav-btn" onclick="navTo('nick')"><span class="nav-num">3</span> Ник и имя</button>
+    <button class="nav-btn" onclick="navTo('bio')"><span class="nav-num">4</span> Описание</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">5</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">6</span> Глоссарий</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- 1: ЗАЧЕМ -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Главный вопрос</div>
+    <h2 class="section-title"><span class="section-title-hl">Решение принимается за 3 секунды — и не про вас, а про себя</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>За 3 секунды человек видит ваше фото, ник и первую строку описания. И в эти 3 секунды он думает не «кто это», а «<span class="hl-line">а мне это зачем?</span>». Не о ваших регалиях — о том, что он получит, если подпишется.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">3 сек</div>
+        <div class="stat-label">время принятия решения о подписке</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3 элемента</div>
+        <div class="stat-label">фото · ник · первая строка</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1 вечер</div>
+        <div class="stat-label">времени на полную настройку</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Главный сдвиг</div>
+      <h3>Не «кто я» — а «зачем меня читать»</h3>
+      <p>Большинство профилей заполняются по схеме «кто я, что я делаю, где училась, сколько лет в профессии». И это всё про себя. Работает плохо — потому что читатель эгоист в хорошем смысле: он приходит в соцсети за собой, а не за вами. Хочет узнать себя в тексте, найти ответ на свой вопрос, получить эмоцию или вдохновение.</p>
+      <p style="margin-top: 8px;">Правило работает на любой платформе. ВКонтакте, MAX, Telegram, TikTok — везде один и тот же человек с одним и тем же вопросом: <span class="hl-line">«зачем мне тебя читать?»</span>.</p>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Формула профиля</div>
+      <div class="formula-steps">
+        <span class="formula-step">Фото лица</span>
+        <span class="formula-arrow">+</span>
+        <span class="formula-step">Понятный ник</span>
+        <span class="formula-arrow">+</span>
+        <span class="formula-step">Описание про читателя</span>
+        <span class="formula-arrow">=</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">Подписка</span>
+      </div>
+    </div>
+
+    <div class="divider">Сравнение в чистом виде</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Про себя</div>
+        <p><strong>«Нутрициолог, 10 лет опыта, автор курса»</strong></p>
+        <p>Человеку непонятно, что он получит. Регалии говорят про вас, но не отвечают на главный вопрос — «и что с того?».</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Про читателя</div>
+        <p><strong>«Помогаю мамам в декрете питаться нормально, без готовки на 3 часа»</strong></p>
+        <p>Читатель сразу видит себя в тексте. Понимает, кому это адресовано и что он получит. Это цепляет сильнее любых регалий.</p>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Пример автора курса.</strong> В шапке профиля Анастасии стоит: «Не идеальный учитель истории, честно о работе в школе». Без слова «эксперт» — про жизненный опыт. Подписчику ясно: будет реальность со всеми её трудностями, но без перебора. Блог о работе в школе и любви к ней.
+    </div>
+  </section>
+
+  <!-- 2: ФОТО -->
+  <section class="section" id="photo">
+    <div class="section-label"><span class="section-num">02</span>Фото профиля</div>
+    <h2 class="section-title"><span class="section-title-hl">Фото — первое, что видят. Доверие решается до первого слова</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>Лицо должно быть хорошо видно. Не силуэт, не спина, не пейзаж, не цветок, не котик. Лицо, взгляд в камеру или слегка в сторону — этого достаточно для доверия.</p>
+    </div>
+
+    <div class="secrets-grid">
+      <div class="secret-item">
+        <div class="secret-num">01</div>
+        <div>
+          <div class="secret-title">Лицо хорошо видно</div>
+          <div class="secret-desc">Портретная зона до плеч, глаза в камеру или чуть в сторону. Не нужно студии — достаточно света из окна, нейтрального или аккуратного фона и чистой одежды. Смартфон точно справится.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">02</div>
+        <div>
+          <div class="secret-title">Одно фото на всех платформах</div>
+          <div class="secret-desc">Последовательность работает на узнаваемость. Человек увидел вас во ВКонтакте, перешёл в Telegram — и сразу понял, что попал куда надо, по аватарке. Один и тот же портрет везде — это ваш визуальный маркер.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">03</div>
+        <div>
+          <div class="secret-title">Не меняйте часто</div>
+          <div class="secret-desc">Часто меняющееся фото сбивает узнавание — людям труднее найти и идентифицировать вас в ленте. Хороший снимок ставится один раз и стоит долго.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">04</div>
+        <div>
+          <div class="secret-title">Маленький визуальный якорь</div>
+          <div class="secret-desc">Опционально, но сильно работает. У автора курса на фото добавлена жёлтая обводка по контуру головы и плеч — её сразу видно в общей ленте по этому цвету. Маленькая деталь, которая делает вас узнаваемой среди тысяч аватарок.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">Что выбрать</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Не работает</div>
+        <p>Силуэт, фото со спины, пейзаж, букет, домашнее животное, абстрактная картинка, групповое фото, расплывчатый кадр.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Работает</div>
+        <p>Портрет до плеч, лицо в кадре, свет из окна, нейтральный фон, чистая одежда. Желательно — одно и то же на всех платформах.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3: НИК -->
+  <section class="section section-alt" id="nick">
+    <div class="section-label"><span class="section-num">03</span>Ник и имя</div>
+    <h2 class="section-title"><span class="section-title-hl">Ник — это имя и адрес. Запоминаемый, без лишних цифр</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>Ник — это адрес, по которому вас находят. Чем чище и осмысленнее, тем лучше. «Masha.blog.2019» — путаница; «Masha.blog» или «Masha.fit» — понятно с первого взгляда.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Ник</div>
+      <h3>Без лишних цифр и символов</h3>
+      <p>Дату рождения, год регистрации, нижние подчёркивания и точки, не несущие смысла, — убираем. Ник должен <span class="hl-line">читаться вслух за секунду</span> и не вызывать вопросов. Если читаете другу по телефону — он должен записать без переспрашивания.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Имя профиля</div>
+      <h3>Имя + ключевое слово</h3>
+      <p>Это поле, по которому вас находят в поиске. Не просто «Маша», а, например, «Маша / здоровье и питание» или «Маша Иванова · фитнес». Ключевое слово — мост между поисковым запросом и вашим аккаунтом.</p>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Согласованность имён.</strong> Старайтесь, чтобы ники на разных платформах совпадали или были похожими. Это упрощает поиск и формирует единый образ. Хороший ник — короткий, считывается с первого взгляда и сразу намекает на тему блога.
+    </div>
+
+    <div class="divider">До и после</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Не работает</div>
+        <p><strong>masha_blog_2019_official</strong></p>
+        <p>Цифры, нижние подчёркивания, «official» без причины. Сложно произнести, ещё сложнее запомнить. Поисковая ценность — нулевая.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Работает</div>
+        <p><strong>masha.fit · «Маша / здоровье и питание»</strong></p>
+        <p>Ник читается одной фразой. Имя профиля содержит ключевое слово — вас найдут по запросу о здоровье. Один и тот же образ на всех платформах.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4: ОПИСАНИЕ -->
+  <section class="section" id="bio">
+    <div class="section-label"><span class="section-num">04</span>Описание профиля</div>
+    <h2 class="section-title"><span class="section-title-hl">3–5 строк, и каждая работает на «зачем меня читать»</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>В описании от 3 до 5 строк, и у каждой одна задача — отвечать на главный вопрос читателя. Ниже — рабочая структура из 4 строк, от которой можно отступать, но если не знаете, с чего начать, — начинайте именно с неё.</p>
+    </div>
+
+    <div class="bio-template">
+      <div class="bio-template-label">Формат описания · 4 строки</div>
+      <div class="bio-line">
+        <span class="bio-line-num">Строка 01</span>
+        <span class="bio-line-text">Кто вы — через пользу для читателя, не через регалии. <em>Не «нутрициолог с дипломом», а «помогаю найти питание, которое работает для вас».</em></span>
+      </div>
+      <div class="bio-line">
+        <span class="bio-line-num">Строка 02</span>
+        <span class="bio-line-text">Что конкретно получит подписчик. <em>«Рецепты без глютена», «честно о похудении», «короткие рутины тренировок».</em></span>
+      </div>
+      <div class="bio-line">
+        <span class="bio-line-num">Строка 03</span>
+        <span class="bio-line-text">Один живой факт о вас — конкретный и человеческий. <em>«Пробежала первый марафон в 42», «похудела на 18 кг и не вернула».</em></span>
+      </div>
+      <div class="bio-line">
+        <span class="bio-line-num">Строка 04</span>
+        <span class="bio-line-text">Призыв к действию. <em>«Начни с закреплённого поста», «выкладываю каждый вторник — подпишись».</em></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Готовый пример</div>
+      <h3>Как это выглядит в собранном виде</h3>
+      <p>«Помогаю мамам в декрете найти время на спорт. Без чувства вины и без часовых тренировок. Сама прошла этот путь с двумя детьми. Первый шаг в закреплённом посте».</p>
+      <p style="margin-top: 8px;">Четыре строки — и читатель за 3 секунды понял: <span class="hl-line">это про меня, мне это нужно, я подписываюсь</span>.</p>
+    </div>
+
+    <div class="divider">Закреплённый пост</div>
+
+    <div class="card">
+      <div class="card-label">Закреп — ваша входная дверь</div>
+      <h3>За минуту читатель решает, оставаться ли</h3>
+      <p>Закреплённый пост — это расширение описания. Структура простая: кто я, о чём блог, чем могу быть полезен. Пишите без пафоса — отлично работают самоирония и юмор. Сам приветственный пост будем писать с вами на следующей неделе — он станет вашим первым настоящим публичным текстом.</p>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Если результатов пока нет.</strong> Пишите не о результатах, а о пути. Например: «я начинаю этот путь прямо сейчас». Люди подписываются не только на финал — чаще на дорогу, потому что сами в начале своего пути. Ответ на «зачем меня читать» может быть и таким простым: «чтобы не чувствовать себя одиноко в этом вопросе».
+    </div>
+
+    <div class="divider">Три вещи из урока</div>
+
+    <ul class="steps-list">
+      <li>
+        <div>
+          <div class="step-title">Главный вопрос профиля — не «кто я», а «зачем меня читать»</div>
+          <div class="step-desc">Стройте каждый элемент — фото, ник, описание — вокруг ответа на этот вопрос. На любой платформе читатель эгоист в хорошем смысле: пришёл за собой, а не за вашими регалиями.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Фото, ник и описание работают в связке</div>
+          <div class="step-desc">Они создают первое впечатление за 3 секунды. Лицо хорошо видно, ник запоминается, описание говорит про читателя. Если хотя бы один элемент проседает — связка ломается.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Закреплённый пост — входная дверь</div>
+          <div class="step-desc">За минуту он подтверждает или опровергает первое впечатление от шапки. Пишем его на следующей неделе — поэтому место в профиле подготовьте уже сегодня.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 5: ЧЕКЛИСТ -->
+  <section class="section section-alt" id="checklist">
+    <div class="section-label"><span class="section-num">05</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Чек-лист: профиль за один вечер</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 12</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Фото</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">На аватарке хорошо видно лицо, взгляд в камеру или слегка в сторону</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Снято при свете из окна, фон нейтральный, одежда чистая</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">То же фото стоит на всех моих платформах (узнаваемость)</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Ник и имя</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">В нике нет лишних цифр и символов — он читается одной фразой</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">В имени профиля есть ключевое слово (не просто «Маша», а «Маша / тема»)</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Ник на всех моих платформах одинаковый или похожий</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Описание</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Первая строка — про пользу для читателя, не про мои регалии</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Вторая строка говорит, что конкретно получит подписчик</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Третья строка — один живой факт обо мне, конкретный и человеческий</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">В конце есть призыв к действию (например, «начни с закрепа»)</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Связки</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">В профиле стоит ссылка минимум на одну другую мою площадку</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я готов(а) написать закреплённый пост на следующей неделе</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">06</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">Правило 3 секунд</div>
+        <div class="glossary-def">Условный лимит, за который пользователь принимает решение подписываться или нет, увидев фото, ник и первую строку описания. Профиль должен дать ответ на главный вопрос ровно за это время.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Главный вопрос профиля</div>
+        <div class="glossary-def">«Зачем мне тебя читать?» Этот вопрос задаёт каждый зашедший пользователь. Профиль строится не вокруг «кто я», а вокруг ответа на этот вопрос — пользы и эмоции, которую получит читатель.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Описание про читателя</div>
+        <div class="glossary-def">Шапка профиля, в которой каждая строка работает не на самопрезентацию автора, а на пользу подписчика: что он узнает, что получит, какую проблему закроет. Сильнее любых регалий.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Имя профиля</div>
+        <div class="glossary-def">Поле над описанием, по которому вас находят в поиске. Должно содержать имя плюс ключевое слово темы — например, «Маша / здоровье и питание». Главный SEO-инструмент личного блога.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Ключевое слово</div>
+        <div class="glossary-def">Слово или короткая фраза, по которым ваша целевая аудитория ищет контент: «фитнес», «здоровое питание», «школа», «карьера». Включается в имя профиля, чтобы алгоритмы показывали вас по релевантным запросам.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Визуальный якорь</div>
+        <div class="glossary-def">Маленький постоянный элемент аватарки, по которому вас узнают в общей ленте: цветная обводка, контрастный фон, одинаковый кадр. Усиливает узнаваемость в потоке однотипных фото.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Закреплённый пост</div>
+        <div class="glossary-def">Пост, прикреплённый наверху профиля. Работает как «входная дверь»: за минуту даёт читателю развёрнутый ответ на «кто я и зачем меня читать». Структура простая — кто я, о чём блог, чем полезен.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Контент о пути</div>
+        <div class="glossary-def">Контент, который рассказывает не о результате, а о процессе: «я начинаю», «я в середине», «у меня пока ничего не получилось, но я пробую». Работает, потому что подписчик чаще сам в начале пути и хочет наблюдать за похожим движением.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Домашнее задание</h3>
+      <p>Открываете свой профиль на выбранной платформе и за один вечер делаете 4 вещи. Никакой публикации сегодня — только настройка.</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span><strong style="color:#fff;">Поставьте фото лица</strong>, соответствующее требованиям из урока: лицо хорошо видно, свет из окна, нейтральный фон.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span><strong style="color:#fff;">Проверьте ник</strong>: уберите лишние цифры и символы. Имя профиля — имя плюс ключевое слово темы.</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span><strong style="color:#fff;">Напишите описание по схеме урока</strong>: 4 строки — кто вы (через пользу), что получит подписчик, один живой факт, призыв к действию.</span>
+        </li>
+        <li>
+          <span class="task-step-num">04</span>
+          <span><strong style="color:#fff;">Поставьте ссылку</strong> хотя бы на один свой другой профиль — это начало мультиплатформенной связки.</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">
+        Открыть чек-лист ↑
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' });
+    }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sections = ['intro','photo','nick','bio','checklist','glossary'];
+    const idx = sections.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    updateProgress();
+  }
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+  updateProgress();
+  window.addEventListener('scroll', () => {
+    const sections = ['intro','photo','nick','bio','checklist','glossary','task'];
+    const offset = 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, 5));
+    });
+  });
+</script>
+
+</body>
+</html>
