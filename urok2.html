@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 1. Урок 2 — Как мы будем работать на курсе</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 620px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); }
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  @media (max-width: 640px) { .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; } }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .compare-card { border-radius: var(--radius-md); padding: 20px; font-size: 14px; line-height: 1.6; }
+  .compare-bad { background: #FFF5F5; border: 1px solid #FCCACA; }
+  .compare-good { background: #F5FEE0; border: 1px solid #D4F097; }
+  .compare-header { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .compare-bad .compare-header { color: #C03030; }
+  .compare-good .compare-header { color: #4A8000; }
+  .compare-card p { color: #444; margin-bottom: 8px; }
+  .compare-card p:last-child { margin-bottom: 0; }
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+  .secrets-grid { display: grid; gap: 12px; }
+  .secret-item { display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: start; }
+  .secret-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .secret-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .secret-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-dark p:last-of-type { margin-bottom: 20px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+  .hl { background: var(--accent); color: var(--accent-ink); padding: 1px 7px; border-radius: 5px; font-weight: 600; }
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card { padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--ink); }
+  .stat-label { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--ink-3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .questions-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+  .question-card { padding: 18px 22px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .question-num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em; margin-bottom: 6px; }
+  .question-text { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--ink); }
+  .question-hint { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .section-alt .card,
+  .section-alt .stat-card,
+  .section-alt .question-card { background: var(--bg); }
+  .section-alt .secret-item { background: var(--bg); }
+  .section-alt .glossary-item { background: var(--bg); }
+  .section-alt .checklist-item { background: var(--bg); }
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .formula-steps { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 1 / Урок 2</span>
+      <span class="title-text">Как мы будем работать на курсе</span>
+    </div>
+    <p class="hero-lead">Этот курс — не склад знаний, а тренажёр действий. Разбираем, почему многие не доходят до конца большинства онлайн-курсов и как определить для себя три простых правила, чтобы блог реально появился и вырос за время обучения.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Анастасия Дробот, спикер курса, блогер</span>
+      <span class="chip"><span class="chip-dot"></span>Принцип «большой слон»</span>
+      <span class="chip"><span class="chip-dot"></span>3 личных правила</span>
+      <span class="chip"><span class="chip-dot"></span>Регулярность 6/10</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> Почему это важно</button>
+    <button class="nav-btn" onclick="navTo('principle')"><span class="nav-num">2</span> Главный принцип</button>
+    <button class="nav-btn" onclick="navTo('elephant')"><span class="nav-num">3</span> Большой слон</button>
+    <button class="nav-btn" onclick="navTo('rules')"><span class="nav-num">4</span> Три правила</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">5</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">6</span> Глоссарий</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- 1: ЗАЧЕМ -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Почему это важно</div>
+    <h2 class="section-title"><span class="section-title-hl">Знание — ещё не блог. Блогом делает только действие</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Большинство людей, купивших онлайн-курс, его не заканчивают. А те, кто заканчивает, часто выходят с ощущением «много узнал, но ничего не поменялось». Этот урок — про то, как этого не допустить.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">6 недель</div>
+        <div class="stat-label">срок, за который мы строим работающий блог</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">10–30 мин</div>
+        <div class="stat-label">время на одно задание после урока</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3 правила</div>
+        <div class="stat-label">личных, которые вы поставите себе сами</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">О чём этот урок</div>
+      <h3>Не теория обучения, а практическая инструкция к курсу</h3>
+      <p>Цель курса — не собрать у вас полку знаний, а помочь дойти до конкретного результата: блог с темой, площадкой, контент-системой и первыми подписчиками. <span class="hl-line">Этот урок — точка отсчёта</span>, в которой вы решаете, как именно будете работать с материалом следующие 6 недель.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Почему курс часто не «срабатывает»</div>
+      <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 0;">
+        <li style="display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--line);">
+          <span style="color: var(--accent-strong); font-family: var(--font-mono); font-size: 15px; font-weight: 700; flex-shrink: 0; padding-top: 1px;">—</span>
+          <span style="font-size: 15px; color: var(--ink-2); line-height: 1.65;">Уроки превращаются в «посмотрел и закрыл» — без задания, которое сделано в тот же день.</span>
+        </li>
+        <li style="display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--line);">
+          <span style="color: var(--accent-strong); font-family: var(--font-mono); font-size: 15px; font-weight: 700; flex-shrink: 0; padding-top: 1px;">—</span>
+          <span style="font-size: 15px; color: var(--ink-2); line-height: 1.65;">Студент ждёт «идеального момента», чтобы запустить блог, и этот момент не наступает.</span>
+        </li>
+        <li style="display: flex; gap: 14px; align-items: flex-start; padding: 14px 0;">
+          <span style="color: var(--accent-strong); font-family: var(--font-mono); font-size: 15px; font-weight: 700; flex-shrink: 0; padding-top: 1px;">—</span>
+          <span style="font-size: 15px; color: var(--ink-2); line-height: 1.65;">Цель сформулирована как «стать блогером» — слишком абстрактно, чтобы измерить за 5 недель.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Логика курса</div>
+      <div class="formula-steps">
+        <span class="formula-step">Урок (1 идея)</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Задание 10–30 мин</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Действие сегодня</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">Система за 6 недель</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2: ГЛАВНЫЙ ПРИНЦИП -->
+  <section class="section" id="principle">
+    <div class="section-label"><span class="section-num">02</span>Главный принцип</div>
+    <h2 class="section-title"><span class="section-title-hl">Не пройти все уроки — а внедрить максимум рекомендаций</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>Знание о том, как писать посты, не делает вас блогером. Блогером делает написанный пост. Даже плохой, даже с тремя лайками — потому что в нём ваш реальный опыт, которого нет в уроке.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Почему так</div>
+      <h3>В написанном посте есть то, чего нет в уроке</h3>
+      <p>Урок даёт каркас и рекомендации, но содержание блога — ваш голос, ваша история, ваш способ объяснять — рождается только в момент действия. <span class="hl-line">Пусть не всё, пусть не идеально</span> — несовершенный пост, опубликованный сегодня, работает лучше, чем идеальный пост, написанный в голове.</p>
+    </div>
+
+    <div class="divider">Как читать каждый урок</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Складская модель</div>
+        <p><strong>«Сначала пройду весь курс — потом начну»</strong></p>
+        <p>Уроки складываются на полку, задания откладываются «до выходных», блог запускается «когда будет готово всё». Чаще всего этот момент не наступает.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Рабочая модель</div>
+        <p><strong>«Урок — задание — сделано сегодня»</strong></p>
+        <p>Каждое задание делается в тот же день, пусть на 6/10. К шестой неделе у вас не сертификат, а живой блог с темой, площадкой и контентом.</p>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Проверка для каждого задания.</strong> Смотрите на него с одним вопросом: «Что из этого я могу сделать <em>уже сегодня</em>, в том виде, в котором это возможно прямо сейчас?» Не «когда станет удобно», а сегодня — даже криво, даже на 5 минут.
+    </div>
+  </section>
+
+  <!-- 3: БОЛЬШОЙ СЛОН -->
+  <section class="section section-alt" id="elephant">
+    <div class="section-label"><span class="section-num">03</span>Большой слон</div>
+    <h2 class="section-title"><span class="section-title-hl">Едим слона по кусочкам — и так складывается система</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Метафора</div>
+      <p>Когда смотришь на блогинг целиком — это огромный слон: тема, платформа, контент, съёмка, аналитика, монетизация, юридический аспект. Всё сразу — непосильно. Поэтому будем есть по маленькому кусочку.</p>
+    </div>
+
+    <div class="secrets-grid">
+      <div class="secret-item">
+        <div class="secret-num">01</div>
+        <div>
+          <div class="secret-title">Один урок — одна идея</div>
+          <div class="secret-desc">Каждый урок развёрнут глубоко, но крутится вокруг одной мысли. Не пытайтесь запомнить всё — поймите главную идею и перейдите к заданию. Остальное закрепится в практике.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">02</div>
+        <div>
+          <div class="secret-title">Одно задание — одно действие</div>
+          <div class="secret-desc">10–30 минут, прямо в день просмотра урока. Иногда задание будет казаться пустяком — «ну и что, я просто написала три темы в заметках». Но именно из таких пустяков складывается система.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">03</div>
+        <div>
+          <div class="secret-title">Действие сегодня важнее теории</div>
+          <div class="secret-desc">Если выбирать между «посмотреть ещё один урок» и «сделать задание по предыдущему» — сделать задание. Один внедрённый совет ценнее десяти изученных.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">04</div>
+        <div>
+          <div class="secret-title">Блогинг — профессия, а не хобби</div>
+          <div class="secret-desc">У неё есть инструменты, логика, правила и обязательная часть — постоянное обучение. Алгоритмы меняются, платформы появляются и исчезают, форматы устаревают. В профессии это не пугает — это просто часть работы.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">05</div>
+        <div>
+          <div class="secret-title">Каждый раз — быстрее</div>
+          <div class="secret-desc">Разбираться в новом вы будете постоянно. Хорошая новость: с каждым разом — быстрее. Через год новая платформа изучается за пару дней, а не за два месяца. Это навык, который накапливается.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">06</div>
+        <div>
+          <div class="secret-title">Регулярность важнее интенсивности</div>
+          <div class="secret-desc">Не нужно делать всё на 10/10. Достаточно на 6 или 7 из 10 — но регулярно. Это позволяет получать стабильный результат без выгорания, апатии и «всё-брошу-и-уйду».</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4: ТРИ ПРАВИЛА -->
+  <section class="section" id="rules">
+    <div class="section-label"><span class="section-num">04</span>Три личных правила</div>
+    <h2 class="section-title"><span class="section-title-hl">Три вопроса, на которые нужно ответить прямо сейчас</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Главное</div>
+      <p>Чужие правила не работают. Работают только те, которые вы поставили себе сами. Поэтому ниже — не «расписание от автора курса», а три вопроса, на которые отвечаете лично вы.</p>
+    </div>
+
+    <div class="questions-grid">
+      <div class="question-card">
+        <div class="question-num">Вопрос 01 · Регулярность</div>
+        <div class="question-text">Когда вы будете смотреть уроки?</div>
+        <div class="question-hint">Нужно конкретное время и конкретный день недели. «По вечерам, когда будет настроение» — не подходит. «Вторник и четверг с 21:00 до 21:40» — подходит. Блогинг — это регулярность, и она начинается прямо сейчас, с этого урока.</div>
+      </div>
+      <div class="question-card">
+        <div class="question-num">Вопрос 02 · Минимум</div>
+        <div class="question-text">Что будет вашим минимумом в тяжёлую неделю?</div>
+        <div class="question-hint">У всех бывает: работа, семья, дети, болезни, непредвиденные обстоятельства. Зафиксируйте, что вы делаете в такие периоды — один урок? одно задание? один пост? Этот минимум спасает от ощущения «я всё забросил» и от соблазна вообще не возвращаться.</div>
+      </div>
+      <div class="question-card">
+        <div class="question-num">Вопрос 03 · Цель</div>
+        <div class="question-text">Какой результат вы хотите получить через 5 недель?</div>
+        <div class="question-hint">Только не «стать блогером». Конкретный пример с цифрами: количество подписчиков, число вышедших публикаций, отснятых сторис, набранных охватов. Будьте реалистичны — ставьте цель, до которой реально дойти, а не «миллион за месяц».</div>
+      </div>
+    </div>
+
+    <div class="divider">Как формулировать цель</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Размытая цель</div>
+        <p><strong>«Хочу стать блогером»</strong></p>
+        <p>Невозможно измерить, нельзя отметить «выполнено», легко себя обмануть. Через 5 недель непонятно, чего вы добились — и от этого опускаются руки.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Рабочая цель</div>
+        <p><strong>«15 публикаций и 200 подписчиков во ВКонтакте за 5 недель»</strong></p>
+        <p>Конкретно, измеримо, реалистично. На 5-й неделе можно открыть профиль и проверить — сделано или нет. Это даёт ощущение движения и удерживает в курсе.</p>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Любимая мысль автора курса.</strong> Не нужно делать всё идеально. Делайте на 6 или 7 из 10. Это поможет получить регулярный результат без выгорания и без апатии. Перфекционизм — главный враг старта.
+    </div>
+
+    <div class="divider">Три вещи из урока</div>
+
+    <ul class="steps-list">
+      <li>
+        <div>
+          <div class="step-title">Курс работает только через действие</div>
+          <div class="step-desc">Знание без практики — просто информация без применения. Ваша задача — не «посмотреть все уроки», а внедрить максимум рекомендаций.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Каждое задание — кусочек большого слона</div>
+          <div class="step-desc">Пустяк сегодня, система через 6 недель. Маленькие шаги складываются в результат, к которому невозможно прийти одним прыжком.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Блогинг — профессия, в которой учатся постоянно</div>
+          <div class="step-desc">Цель курса — не дать все ответы, а помочь быстро выстроить свои правила и научиться на них опираться. Дальше вы будете обновлять знания самостоятельно.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 5: ЧЕКЛИСТ -->
+  <section class="section section-alt" id="checklist">
+    <div class="section-label"><span class="section-num">05</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Чек-лист: готов ли я к работе на курсе</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 12</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Установки</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я понимаю: курс — не склад знаний, а тренажёр действий</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я согласен(а), что несовершенный пост сегодня лучше идеального в голове</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я готов(а) есть «слона» по маленьким кусочкам, а не сразу целиком</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я не жду «идеального момента» — стартую в текущих условиях</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Личные правила</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">У меня есть конкретное время и день недели для уроков курса</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я зафиксировал(а) свой минимум в тяжёлую неделю (1 урок / 1 задание)</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Моя цель на 5 недель сформулирована конкретно, в цифрах</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Цель реалистична — я могу до неё дойти при моём ритме жизни</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Работа с заданиями</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">После каждого урока я делаю задание в тот же день, на 6–7 / 10</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я не складываю «непонятные» задания на потом — спрашиваю сразу</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я отношусь к блогу как к профессии, а не к разовому проекту</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я готов(а) сделать первое публичное заявление в чате курса</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">06</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">Складская модель обучения</div>
+        <div class="glossary-def">Модель, при которой знания «складываются на полку» без применения: уроки пройдены, задания не сделаны, блога нет. Самый частый сценарий, при котором онлайн-курс не приводит к результату.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Принцип «большого слона»</div>
+        <div class="glossary-def">Метафора, объясняющая работу с курсом: блогинг как объект слишком большой, чтобы съесть его целиком, поэтому делится на маленькие кусочки — один урок, одно задание, одно действие.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Несовершенный пост</div>
+        <div class="glossary-def">Публикация, сделанная сегодня, на 6–7 / 10, без шлифовки до блеска. Опорный приём курса: такой пост работает лучше идеального, потому что он реально выходит, а идеальный остаётся в голове.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Регулярность</div>
+        <div class="glossary-def">Постоянный ритм действий вне зависимости от вдохновения и настроения. На курсе — фиксированное время для уроков и заданий. В блоге — стабильный график публикаций, который удерживает алгоритмы и подписчиков.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Минимум тяжёлой недели</div>
+        <div class="glossary-def">Заранее зафиксированная нижняя планка действий для периодов, когда не получается работать в полную силу: один урок, одно задание, один короткий пост. Спасает от ощущения «всё забросил».</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Цель в цифрах</div>
+        <div class="glossary-def">Конкретный измеримый результат на горизонте 5 недель: число публикаций, подписчиков, отснятых сторис. Заменяет размытое «стать блогером» и позволяет в любой момент проверить, идёте ли вы по графику.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Принцип 6/10</div>
+        <div class="glossary-def">Установка делать всё «нормально», а не «идеально». Качество не страдает критически, а скорость и регулярность вырастают в разы. Главный антидот к перфекционизму и выгоранию.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Публичное заявление</div>
+        <div class="glossary-def">Короткий текст в чате курса формата «Меня зовут …, хочу вести блог о …, через 5 недель хочу прийти к …». Первый настоящий публичный шаг — он создаёт ответственность и запускает остальное.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Домашнее задание</h3>
+      <p>Это база, на которую мы будем опираться все следующие 6 недель. Возвращайтесь к этим ответам сколько угодно — они станут вашим внутренним ориентиром, когда станет тяжело.</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span>Запишите для себя <strong style="color:#fff;">три личных правила</strong> на курсе по схеме урока: когда смотрю уроки, мой минимум в тяжёлую неделю, мой результат через 5 недель — обязательно в цифрах.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span>Зайдите в заметки или чат курса и напишите одно полноценное предложение: <strong style="color:#fff;">«Меня зовут так-то. Хочу вести блог на такую-то тему. Через 5 недель хочу прийти к такому результату».</strong> Это ваше первое публичное заявление.</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span>Сохраните этот документ — мы будем возвращаться к нему на каждой неделе курса, чтобы свериться с целью и при необходимости её скорректировать.</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">
+        Открыть чек-лист ↑
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' });
+    }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sections = ['intro','principle','elephant','rules','checklist','glossary'];
+    const idx = sections.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    updateProgress();
+  }
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+  updateProgress();
+  window.addEventListener('scroll', () => {
+    const sections = ['intro','principle','elephant','rules','checklist','glossary','task'];
+    const offset = 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, 5));
+    });
+  });
+</script>
+
+</body>
+</html>
