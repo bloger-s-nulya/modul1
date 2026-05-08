@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 1. Урок 3 — Зачем вести блог и о чём говорить: как найти свою тему</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 620px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); }
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  @media (max-width: 640px) { .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; } }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .compare-card { border-radius: var(--radius-md); padding: 20px; font-size: 14px; line-height: 1.6; }
+  .compare-bad { background: #FFF5F5; border: 1px solid #FCCACA; }
+  .compare-good { background: #F5FEE0; border: 1px solid #D4F097; }
+  .compare-header { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .compare-bad .compare-header { color: #C03030; }
+  .compare-good .compare-header { color: #4A8000; }
+  .compare-card p { color: #444; margin-bottom: 8px; }
+  .compare-card p:last-child { margin-bottom: 0; }
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+  .secrets-grid { display: grid; gap: 12px; }
+  .secret-item { display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: start; }
+  .secret-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .secret-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .secret-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-dark p:last-of-type { margin-bottom: 20px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+  .hl { background: var(--accent); color: var(--accent-ink); padding: 1px 7px; border-radius: 5px; font-weight: 600; }
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card { padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--ink); }
+  .stat-label { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--ink-3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .questions-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+  .question-card { padding: 18px 22px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .question-num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em; margin-bottom: 6px; }
+  .question-text { font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--ink); }
+  .question-hint { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .headlines-list { list-style: none; display: grid; gap: 8px; margin-bottom: 16px; }
+  .headlines-list li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--ink); border: 1px solid var(--line); }
+  .headlines-list li::before { content: '—'; font-family: var(--font-mono); color: var(--accent-strong); font-weight: 700; flex-shrink: 0; }
+  /* ——— РАБОЧИЙ ЛИСТ ——— */
+  .worksheet { background: var(--bg); border: 2px solid var(--accent); border-radius: var(--radius-lg); padding: 28px; margin: 24px 0 16px; box-shadow: var(--shadow-sm); }
+  .worksheet-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .worksheet-badge { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent); display: inline-block; padding: 5px 12px; border-radius: var(--radius-sm); font-weight: 700; }
+  .worksheet-status { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em; margin-left: auto; }
+  .worksheet-title { font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 8px; color: var(--ink); }
+  .worksheet-intro { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 22px; }
+  .worksheet-questions { display: grid; gap: 14px; }
+  .worksheet-q { padding: 18px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .worksheet-q-num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em; margin-bottom: 6px; }
+  .worksheet-q-text { font-weight: 700; font-size: 15px; color: var(--ink); margin-bottom: 4px; line-height: 1.4; }
+  .worksheet-q-hint { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin-bottom: 12px; }
+  .worksheet-input { width: 100%; min-height: 84px; padding: 12px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 14px; line-height: 1.55; color: var(--ink); resize: vertical; outline: none; transition: border-color .15s, box-shadow .15s; box-sizing: border-box; }
+  .worksheet-input:focus { border-color: var(--accent-strong); box-shadow: 0 0 0 3px rgba(196,245,66,0.25); }
+  .worksheet-input::placeholder { color: var(--ink-3); }
+  .worksheet-summary { margin-top: 16px; padding: 18px 20px; background: var(--ink); color: #fff; border-radius: var(--radius-md); }
+  .worksheet-summary-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 8px; }
+  .worksheet-summary-text { font-weight: 700; font-size: 15px; color: #fff; line-height: 1.55; margin-bottom: 12px; }
+  .worksheet-input--dark { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); color: #fff; }
+  .worksheet-input--dark:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(196,245,66,0.25); }
+  .worksheet-input--dark::placeholder { color: #6A6E74; }
+  .section-alt .card,
+  .section-alt .stat-card,
+  .section-alt .question-card { background: var(--bg); }
+  .section-alt .secret-item { background: var(--bg); }
+  .section-alt .glossary-item { background: var(--bg); }
+  .section-alt .checklist-item { background: var(--bg); }
+  .section-alt .headlines-list li { background: var(--bg); }
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .formula-steps { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 1 / Урок 3</span>
+      <span class="title-text">Зачем вести блог и о чём говорить: как найти свою тему</span>
+    </div>
+    <p class="hero-lead">Тема не придумывается — она находится. Разбираем, как найти своё «зачем», вытащить тему из реальной жизни и понять, для кого конкретно вы пишете. По итогам — три коротких текста, на которые блог сможет опереться.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Анастасия Дробот, спикер курса, блогер</span>
+      <span class="chip"><span class="chip-dot"></span>Зачем + О чём + Для кого</span>
+      <span class="chip"><span class="chip-dot"></span>4 вопроса для темы</span>
+      <span class="chip"><span class="chip-dot"></span>Линия блога</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> Почему это важно</button>
+    <button class="nav-btn" onclick="navTo('why')"><span class="nav-num">2</span> Личное «Зачем»</button>
+    <button class="nav-btn" onclick="navTo('topic')"><span class="nav-num">3</span> Тема: 4 вопроса</button>
+    <button class="nav-btn" onclick="navTo('reader')"><span class="nav-num">4</span> Для кого</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">5</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">6</span> Глоссарий</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- 1: ЗАЧЕМ -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Почему это важно</div>
+    <h2 class="section-title"><span class="section-title-hl">Разница не в опыте и не в камере — в том, нашли ли вы свою тему</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Наблюдение</div>
+      <p>Есть люди, которые ведут блог уже год — и каждый пост для них пытка. И есть те, кто стартовал три месяца назад и не может остановиться. Дело не в опыте и не в камере. Дело в том, нашли ли они то, о чём им не лень говорить снова и снова.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">3 текста</div>
+        <div class="stat-label">по итогам урока: «Зачем», «Темы», «Линия блога»</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4 вопроса</div>
+        <div class="stat-label">для извлечения темы из реальной жизни</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1 читатель</div>
+        <div class="stat-label">конкретный человек, для которого вы пишете</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Что получите после урока</div>
+      <h3>Три рабочих документа, к которым будете возвращаться</h3>
+      <p>После этого занятия у вас будет: <span class="hl-line">личное «Зачем»</span> — то, что удержит вас в блоге, когда станет трудно; <strong>тема</strong> — о чём говорить; и <strong>портрет читателя</strong> — для кого конкретно вы это делаете. Все три не выдумываются, а вытаскиваются из вашей жизни.</p>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Логика урока</div>
+      <div class="formula-steps">
+        <span class="formula-step">Зачем</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">О чём</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Для кого</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">Линия блога</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2: ЗАЧЕМ ЛИЧНОЕ -->
+  <section class="section" id="why">
+    <div class="section-label"><span class="section-num">02</span>Личное «Зачем»</div>
+    <h2 class="section-title"><span class="section-title-hl">Начинаем не с «о чём?», а с «зачем?» — это мотивация не бросить</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>Большинство людей начинает с «о чём мне вести блог?». Правильно начинать с «зачем?» — потому что ответ на «зачем» удержит вас, когда пост наберёт мало лайков, придёт неприятный комментарий или несколько недель будут «не моими».</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Тип 01 · Неденежное «Зачем»</div>
+      <h3>Смысл, который держит, когда трудно</h3>
+      <p>Это про опору и внутреннее движение, а не про деньги. Например: «хочу перестать бояться камеры», «хочу найти своих людей — тех, кто думает так же», «хочу, чтобы мой опыт кому-то помог», «хочу что-то оставить после себя».</p>
+      <p style="margin-top: 8px;">Неденежное «зачем» автора курса — быть в кругу единомышленников, быть увиденной такими же педагогами и профессионалами; получать поддержку, дружескую атмосферу и духовное единство.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Тип 02 · Денежное «Зачем»</div>
+      <h3>Дополнительный доход — это нормально</h3>
+      <p>«Хочу дополнительный доход», «хочу уйти из найма», «хочу монетизировать то, что умею» — говорить об этом вслух не стыдно. Работа может и должна приносить деньги, а блог — это работа. Монетизации мы посвятим отдельную неделю курса.</p>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Важная связка.</strong> Денежное «зачем» работает только тогда, когда под ним есть неденежное. Деньги в блоге приходят не сразу — а если деятельность приносит вам удовольствие, рано или поздно она начнёт приносить и доход.
+    </div>
+
+    <div class="divider">Как формулировать</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Слабая формулировка</div>
+        <p><strong>«Хочу зарабатывать на блоге»</strong></p>
+        <p>Без неденежной опоры: на месяце без результата мотивация заканчивается, а вместе с ней — и блог. Деньги пока не пришли, а смысла, ради которого стоит продолжать, нет.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Рабочая формулировка</div>
+        <p><strong>«Хочу найти своих людей и со временем монетизировать опыт»</strong></p>
+        <p>Внизу — связь с другими, наверху — деньги. Эта пара держит и в первый месяц, когда подписчиков мало, и потом, когда блог уже приносит доход.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Упражнение</div>
+      <h3>Запишите своё «зачем» одним предложением</h3>
+      <p>Не думайте долго. Первое, что пришло в голову, — оно и есть настоящее. Если в голове сразу про деньги — пишите про деньги. Если про «найти своих» — пишите так. Это рабочий черновик, к которому вы будете возвращаться, а не публикация.</p>
+    </div>
+  </section>
+
+  <!-- 3: ТЕМА -->
+  <section class="section section-alt" id="topic">
+    <div class="section-label"><span class="section-num">03</span>Тема: 4 вопроса</div>
+    <h2 class="section-title"><span class="section-title-hl">Тему не придумывают — её вытаскивают четырьмя вопросами</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Главное</div>
+      <p>Тема уже есть внутри вас — её нужно просто извлечь. Открываем заметки, отвечаем на четыре вопроса без оценки и без редактуры. Записывайте всё подряд: пересортируем потом.</p>
+    </div>
+
+    <div class="secrets-grid">
+      <div class="secret-item">
+        <div class="secret-num">01</div>
+        <div>
+          <div class="secret-title">О чём вас спрашивают?</div>
+          <div class="secret-desc">Вспомните последние несколько месяцев: о чём чаще всего спрашивают друзья, коллеги, знакомые? Совет по питанию, как вы успеваете с детьми, как начали бегать, как справляетесь с тревогой? Люди спрашивают не случайно — они видят в вас человека, у которого есть ответ. Запишите 3–5 таких тем.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">02</div>
+        <div>
+          <div class="secret-title">О чём вы говорите долго и не уставая?</div>
+          <div class="secret-desc">Есть ли темы, на которых вы смотрите на часы и думаете: «о боже, мы уже два часа разговариваем»? Это и есть ваша тема. Что угодно: дети, психология, питание, путешествия, карьера, спорт, уход за собой, финансы, кулинария, переезд. Запишите 3 темы, про которые можете говорить бесконечно.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">03</div>
+        <div>
+          <div class="secret-title">Что вы искали — и не нашли в нужном качестве?</div>
+          <div class="secret-desc">Возможно, вы гуглили что-то важное и находили только сухие статьи или устаревшие советы. Это место — ваше, потому что вы точно знаете, какого контента не хватает. Значит, его не хватает и другим. Запишите 1–2 таких запроса.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">04</div>
+        <div>
+          <div class="secret-title">Что вы делаете прямо сейчас?</div>
+          <div class="secret-desc">Самый недооценённый источник темы. Не нужно быть экспертом — можно идти по пути и честно об этом рассказывать. Только начали бегать? Худеете после родов? Учитесь готовить, переезжаете, меняете профессию, восстанавливаетесь после травмы? Это всё прекрасные темы, похожие на сериал — за ними будут следить.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Сдвиг подачи.</strong> Уходим от контента в духе «я знаю, как надо» — к контенту «я иду туда же, куда и вы». «Я тоже не знаю правильного пути, но я иду — давайте идти вместе». Это работает сильнее экспертности, особенно на старте.
+    </div>
+
+    <!-- ——— РАБОЧИЙ ЛИСТ ——— -->
+    <div class="worksheet" id="worksheet">
+      <div class="worksheet-head">
+        <span class="worksheet-badge">Рабочий лист</span>
+        <span class="worksheet-status" id="worksheet-status">Заполнено: 0 / 5</span>
+      </div>
+      <h3 class="worksheet-title">Ищем вашу тему — прямо сейчас</h3>
+      <p class="worksheet-intro">Не редактируйте, не оценивайте — записывайте всё, что приходит в голову. Тема уже есть внутри вас, наша задача её просто вытащить. Ответы автоматически сохраняются в браузере: можно закрыть страницу и вернуться позже.</p>
+
+      <div class="worksheet-questions">
+        <div class="worksheet-q">
+          <div class="worksheet-q-num">Вопрос 01 · О чём вас спрашивают</div>
+          <div class="worksheet-q-text">О чём вас чаще всего спрашивают друзья, коллеги, знакомые?</div>
+          <div class="worksheet-q-hint">Совет по питанию, как успеваете с детьми, как начали бегать, как справляетесь с тревогой? Запишите 3–5 тем — люди задают эти вопросы не случайно.</div>
+          <textarea class="worksheet-input" data-key="topic-q1" placeholder="3–5 тем, по которым к вам чаще всего обращаются за советом…"></textarea>
+        </div>
+
+        <div class="worksheet-q">
+          <div class="worksheet-q-num">Вопрос 02 · О чём не лень говорить</div>
+          <div class="worksheet-q-text">На каких темах вы говорите долго и не уставая?</div>
+          <div class="worksheet-q-hint">Темы, на которых смотрите на часы и думаете «о боже, мы уже два часа разговариваем». Дети, психология, питание, путешествия, карьера, спорт, финансы, кулинария, переезд — всё что угодно.</div>
+          <textarea class="worksheet-input" data-key="topic-q2" placeholder="3 темы, на которых можете говорить бесконечно…"></textarea>
+        </div>
+
+        <div class="worksheet-q">
+          <div class="worksheet-q-num">Вопрос 03 · Что искали — и не нашли</div>
+          <div class="worksheet-q-text">Что вы сами искали и не нашли в нужном качестве?</div>
+          <div class="worksheet-q-hint">Возможно, гуглили что-то важное и находили только сухие статьи или устаревшие советы. Это место — ваше. Запишите 1–2 таких запроса.</div>
+          <textarea class="worksheet-input" data-key="topic-q3" placeholder="1–2 запроса, на которые не было хорошего ответа в сети…"></textarea>
+        </div>
+
+        <div class="worksheet-q">
+          <div class="worksheet-q-num">Вопрос 04 · Через что вы проходите</div>
+          <div class="worksheet-q-text">Что вы делаете или через что проходите прямо сейчас?</div>
+          <div class="worksheet-q-hint">Только начали бегать? Худеете после родов? Учитесь готовить, переезжаете, меняете профессию, восстанавливаетесь? Это сериальная тема — за ней будут следить.</div>
+          <textarea class="worksheet-input" data-key="topic-q4" placeholder="Что вы прямо сейчас проживаете, к чему идёте на этом этапе…"></textarea>
+        </div>
+      </div>
+
+      <div class="worksheet-summary">
+        <div class="worksheet-summary-label">Сборка · общая нить</div>
+        <div class="worksheet-summary-text">Перечитайте свои ответы и найдите то, что объединяет несколько тем сразу: общую аудиторию, общий контекст, общее настроение. Это и есть ядро вашего блога.</div>
+        <textarea class="worksheet-input worksheet-input--dark" data-key="topic-summary" placeholder="Моя тема — это … (одна-две фразы, можно криво — это черновик)"></textarea>
+      </div>
+    </div>
+
+    <div class="divider">Как искать общую нить</div>
+
+    <div class="card">
+      <div class="card-label">Сборка темы</div>
+      <h3>Посмотрите на свой список и найдите общий контекст</h3>
+      <p>Список тем после 4 вопросов почти всегда выглядит разношёрстно — это нормально. Теперь ищем, что объединяет несколько тем сразу: общая аудитория, общее настроение, общий жизненный этап.</p>
+      <ul class="headlines-list" style="margin-top: 14px;">
+        <li>Спорт + питание + режим дня + энергия для мамы → <strong style="margin-left:4px;">здоровый образ жизни для женщин с детьми</strong></li>
+        <li>Карьера + баланс + «как не выгореть» → <strong style="margin-left:4px;">для тех, кто много работает и хочет оставаться живым</strong></li>
+        <li>Похудение + отношения с едой + жизнь без диет → <strong style="margin-left:4px;">для тех, кто устал от глянцевых советов</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4: ДЛЯ КОГО -->
+  <section class="section" id="reader">
+    <div class="section-label"><span class="section-num">04</span>Для кого</div>
+    <h2 class="section-title"><span class="section-title-hl">Чем точнее видите читателя — тем легче писать</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>«Для всех женщин» или «для тех, кто хочет быть здоровым» — слишком крупная аудитория. Когда вы видите конкретного человека, вы пишете не в воздух — а ему. Это слышно в каждом посте.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Как сужать</div>
+      <h3>От «всех женщин» к конкретному читателю</h3>
+      <ul class="headlines-list" style="margin-top: 14px;">
+        <li>Молодые мамы в декрете</li>
+        <li>Женщины за 40, которые хотят вернуться в форму</li>
+        <li>Люди, работающие в офисе, которые мечтают сменить профессию</li>
+        <li>Те, кто только переехал в большой город</li>
+        <li>Учителя и студенты педагогических вузов (пример блога автора курса)</li>
+      </ul>
+      <p style="margin-top: 14px;">У каждого блога обычно одно ядро — у автора курса это <span class="hl-line">школа</span>: учителя, студенты-педагоги, родители, иногда сами дети. Разброс большой, но ядро одно.</p>
+    </div>
+
+    <div class="divider">Шаблон линии блога</div>
+
+    <div class="formula">
+      <div class="formula-label">Формула</div>
+      <div class="formula-steps">
+        <span class="formula-step">Мой блог для …</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Я помогаю им …</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">… через личный опыт</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Пример автора курса</div>
+      <h3>Линия блога автора курса</h3>
+      <p>«Мой блог для людей, интересующихся педагогикой, любящих свою профессию и ищущих баланс между работой и личной жизнью. Я помогаю им находить интересные педагогические подходы, развлекаться через юмористический школьный контент и понимать, что мы сталкиваемся с одинаковыми профессиональными проблемами. Делаю это через личный опыт и искренний подход».</p>
+      <p style="margin-top: 8px;"><span class="hl-line">Не страшно, если у вас выйдет криво</span> — это черновик. Он будет уточняться ещё сто раз, но он должен существовать уже сегодня.</p>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Про деньги ещё раз.</strong> Деньги в блоге — это следствие. Следствие доверия, которое строится на искренности. Блогеры, начинавшие с «хочу рассказать о своём пути», приходят к деньгам чаще и быстрее, чем те, кто стартовал с монетизации. Держите денежную цель — но поставьте её на второе место. На первом — тема, голос, подписчик.
+    </div>
+
+    <div class="divider">Три вещи из урока</div>
+
+    <ul class="steps-list">
+      <li>
+        <div>
+          <div class="step-title">«Зачем» важнее «о чём»</div>
+          <div class="step-desc">Это внутренний фундамент, который удержит вас в блоге, когда будет трудно. Денежное и неденежное «зачем» работают вместе — но неденежное надёжнее.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Тему не придумывают — её находят</div>
+          <div class="step-desc">Она уже есть в том, о чём вас спрашивают, о чём вы говорите с удовольствием, что искали и не нашли, через что проходите прямо сейчас. Честный путь новичка — нормальная тема.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="step-title">Блог становится настоящим, когда у него есть конкретный читатель</div>
+          <div class="step-desc">Не «все», а «кто-то один», кому это действительно нужно. Напишите для него — и услышат тысячи таких же.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 5: ЧЕКЛИСТ -->
+  <section class="section section-alt" id="checklist">
+    <div class="section-label"><span class="section-num">05</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Чек-лист: тема и читатель найдены</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 12</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Зачем</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я сформулировал(а) одно неденежное «зачем» для своего блога</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Если деньги — главная мотивация, под ними у меня есть смысл, не связанный с деньгами</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Моё «зачем» записано одним предложением, не отполировано — и это нормально</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Тема</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я ответил(а) на вопрос «о чём меня чаще всего спрашивают» (3–5 тем)</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я выписал(а) темы, на которых говорю долго и не устаю (3 темы)</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я зафиксировал(а), что искал(а) — и не нашёл(нашла) в нужном качестве</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я записал(а) то, через что прохожу прямо сейчас — это тоже тема</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я нашёл(нашла) общую нить, которая объединяет несколько тем в одно ядро</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Для кого</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Мой читатель описан конкретнее, чем «все женщины» или «те, кто хочет быть здоровым»</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я вижу одного конкретного человека, для которого пишу первый пост</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">У меня есть черновик линии блога: «Мой блог для … Я помогаю им … через …»</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я согласен(а), что черновик можно уточнять ещё сто раз — но он уже существует</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">06</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">Личное «Зачем»</div>
+        <div class="glossary-def">Внутренний фундамент блога: причина, по которой вы продолжаете публиковаться, когда лайков мало, охваты падают и приходит неприятный комментарий. Бывает денежным и неденежным; устойчивые блоги опираются на оба, но снизу всегда лежит неденежное.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Неденежное «Зачем»</div>
+        <div class="glossary-def">Смысл, не связанный напрямую с доходом: найти своих людей, перестать бояться камеры, помочь кому-то своим опытом, оставить что-то после себя. Главный «топливный бак» в первые месяцы блога, когда денег ещё нет.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Денежное «Зачем»</div>
+        <div class="glossary-def">Мотивация, связанная с заработком: дополнительный доход, выход из найма, монетизация навыка. Работает, если под ним есть неденежное — иначе мотивация заканчивается раньше первых денег.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Выгрузка тем</div>
+        <div class="glossary-def">Мини-упражнение из урока: ответ на 4 вопроса (о чём спрашивают, о чём говорю, что искал, через что прохожу) без оценки и редактуры. Цель — извлечь темы, которые уже живут в вашей жизни, а не сочинить «правильные».</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Сериальная тема</div>
+        <div class="glossary-def">Тема о процессе, а не о результате: вы только начинаете, идёте по пути, ошибаетесь и фиксируете каждый шаг. Работает сильнее экспертности, потому что читатель сам в начале пути и хочет наблюдать за похожим процессом.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Общая нить</div>
+        <div class="glossary-def">Одно ядро, которое объединяет разношёрстный список тем: общая аудитория, контекст или жизненный этап. Превращает «у меня много интересов» в «у меня один блог о…».</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Линия блога</div>
+        <div class="glossary-def">Короткое описание формата «Мой блог для … Я помогаю им … через …». Заменяет размытое «о жизни», даёт читателю и алгоритмам понятный сигнал: о чём блог и кому он нужен.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Конкретный читатель</div>
+        <div class="glossary-def">Один реальный человек, в адрес которого пишется текст: молодая мама в декрете, женщина за 40, офисный сотрудник в городе-миллионнике. Чем точнее вы его видите, тем легче писать и тем сильнее тексты «попадают».</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Домашнее задание</h3>
+      <p>Сделайте сразу, пока знание свежее. Все три текста короткие — это черновики, к которым вы будете возвращаться. Никакой публикации сегодня не нужно.</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span><strong style="color:#fff;">«Зачем я веду блог»</strong> — 3–5 предложений для себя, не для публикации. Это внутренний документ, опора на трудные дни.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span><strong style="color:#fff;">Список тем</strong> — 5–7 тем, о которых вам не лень говорить. Без оценки, просто список (используйте 4 вопроса из урока).</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span><strong style="color:#fff;">Первый черновик линии блога</strong>: «Мой блог для … Я помогаю им … через …». Одно-два предложения, ничего вылизывать не нужно.</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">
+        Открыть чек-лист ↑
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' });
+    }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sections = ['intro','why','topic','reader','checklist','glossary'];
+    const idx = sections.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    updateProgress();
+  }
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+  updateProgress();
+
+  // ——— Рабочий лист: авто-сохранение и счётчик ———
+  (function() {
+    const inputs = document.querySelectorAll('.worksheet-input');
+    if (!inputs.length) return;
+    const storageOK = (function() {
+      try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); return true; }
+      catch (e) { return false; }
+    })();
+    inputs.forEach(input => {
+      const key = 'fitstars-worksheet-' + input.dataset.key;
+      if (storageOK) {
+        const saved = localStorage.getItem(key);
+        if (saved) input.value = saved;
+      }
+      input.addEventListener('input', () => {
+        if (storageOK) localStorage.setItem(key, input.value);
+        updateWorksheetStatus();
+      });
+    });
+    function updateWorksheetStatus() {
+      const filled = Array.from(inputs).filter(i => i.value.trim().length > 0).length;
+      const status = document.getElementById('worksheet-status');
+      if (status) status.textContent = 'Заполнено: ' + filled + ' / ' + inputs.length;
+    }
+    updateWorksheetStatus();
+  })();
+  window.addEventListener('scroll', () => {
+    const sections = ['intro','why','topic','reader','checklist','glossary','task'];
+    const offset = 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, 5));
+    });
+  });
+</script>
+
+</body>
+</html>
