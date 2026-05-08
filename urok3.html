@@ -157,6 +157,15 @@
   .worksheet-input--dark { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); color: #fff; }
   .worksheet-input--dark:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(196,245,66,0.25); }
   .worksheet-input--dark::placeholder { color: #6A6E74; }
+  .worksheet-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 18px; }
+  .worksheet-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; transition: background .15s, transform .1s; }
+  .worksheet-btn:hover { background: var(--accent-strong); }
+  .worksheet-btn:active { transform: scale(0.98); }
+  .worksheet-btn--ghost { background: transparent; color: var(--ink-2); border: 1px solid var(--line); }
+  .worksheet-btn--ghost:hover { background: var(--bg-muted); color: var(--ink); }
+  .worksheet-btn-icon { font-family: var(--font-mono); font-size: 14px; line-height: 1; }
+  .worksheet-toast { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: #4A8000; padding: 6px 10px; background: #F5FEE0; border: 1px solid #C8F090; border-radius: var(--radius-sm); opacity: 0; transition: opacity .2s; }
+  .worksheet-toast.show { opacity: 1; }
   .section-alt .card,
   .section-alt .stat-card,
   .section-alt .question-card { background: var(--bg); }
@@ -393,6 +402,18 @@
         <div class="worksheet-summary-label">Сборка · общая нить</div>
         <div class="worksheet-summary-text">Перечитайте свои ответы и найдите то, что объединяет несколько тем сразу: общую аудиторию, общий контекст, общее настроение. Это и есть ядро вашего блога.</div>
         <textarea class="worksheet-input worksheet-input--dark" data-key="topic-summary" placeholder="Моя тема — это … (одна-две фразы, можно криво — это черновик)"></textarea>
+      </div>
+
+      <div class="worksheet-actions">
+        <button class="worksheet-btn" id="worksheet-copy" type="button">
+          <span class="worksheet-btn-icon">⧉</span>
+          <span>Скопировать ответы</span>
+        </button>
+        <button class="worksheet-btn worksheet-btn--ghost" id="worksheet-clear" type="button">
+          <span class="worksheet-btn-icon">⌫</span>
+          <span>Очистить</span>
+        </button>
+        <span class="worksheet-toast" id="worksheet-toast">Скопировано в буфер обмена</span>
       </div>
     </div>
 
@@ -680,6 +701,73 @@
       if (status) status.textContent = 'Заполнено: ' + filled + ' / ' + inputs.length;
     }
     updateWorksheetStatus();
+
+    // ——— Кнопка «Скопировать ответы» ———
+    const copyBtn = document.getElementById('worksheet-copy');
+    const clearBtn = document.getElementById('worksheet-clear');
+    const toast = document.getElementById('worksheet-toast');
+    function showToast(text, isError) {
+      if (!toast) return;
+      toast.textContent = text;
+      toast.style.color = isError ? '#C03030' : '#4A8000';
+      toast.style.background = isError ? '#FFF5F5' : '#F5FEE0';
+      toast.style.borderColor = isError ? '#FCCACA' : '#C8F090';
+      toast.classList.add('show');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+    function buildText() {
+      const blocks = [];
+      blocks.push('РАБОЧИЙ ЛИСТ — ИЩЕМ ВАШУ ТЕМУ');
+      blocks.push('Урок 3 · «Зачем вести блог и о чём говорить»');
+      blocks.push('');
+      document.querySelectorAll('.worksheet-q').forEach(q => {
+        const num = q.querySelector('.worksheet-q-num');
+        const text = q.querySelector('.worksheet-q-text');
+        const input = q.querySelector('.worksheet-input');
+        if (num) blocks.push(num.textContent.trim().toUpperCase());
+        if (text) blocks.push(text.textContent.trim());
+        blocks.push('— ' + ((input && input.value.trim()) || '(не заполнено)'));
+        blocks.push('');
+      });
+      const summary = document.querySelector('.worksheet-summary .worksheet-input');
+      blocks.push('СБОРКА · ОБЩАЯ НИТЬ');
+      blocks.push('— ' + ((summary && summary.value.trim()) || '(не заполнено)'));
+      return blocks.join('\n');
+    }
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const text = buildText();
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          showToast('Скопировано в буфер обмена', false);
+        } catch (e) {
+          showToast('Не удалось скопировать', true);
+        }
+      });
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if (!confirm('Очистить все ответы рабочего листа?')) return;
+        inputs.forEach(input => {
+          input.value = '';
+          if (storageOK) localStorage.removeItem('fitstars-worksheet-' + input.dataset.key);
+        });
+        updateWorksheetStatus();
+        showToast('Ответы очищены', false);
+      });
+    }
   })();
   window.addEventListener('scroll', () => {
     const sections = ['intro','why','topic','reader','checklist','glossary','task'];
